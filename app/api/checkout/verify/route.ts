@@ -1,10 +1,7 @@
-// app/api/checkout/verify/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
+// app/api/checkout/verify/route.ts   (fixed version)
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-12-15.clover',
-});
+import { NextRequest, NextResponse } from 'next/server';
+import { stripe } from '@/lib/stripe';   // ← import here!
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,7 +14,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Retrieve the session from Stripe
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ['line_items', 'customer_details'],
     });
@@ -41,7 +37,7 @@ export async function GET(req: NextRequest) {
   } catch (err: any) {
     console.error('Session verification error:', err);
     return NextResponse.json(
-      { error: err.message },
+      { error: err.message || 'Internal server error' },
       { status: 500 }
     );
   }

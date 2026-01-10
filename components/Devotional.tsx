@@ -1,11 +1,10 @@
 'use client'
 
 import React from 'react';
-import { 
-  Book, Check, 
-  Plus, ShoppingBag
-} from 'lucide-react';
+import { Check, ShoppingBag, ArrowRight, Star, BookOpen, Users, Sparkles } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Product {
   id: string;
@@ -15,7 +14,6 @@ interface Product {
   period?: string;
   image?: string;
   color?: string;
-  accent?: string;
   features?: string[];
 }
 
@@ -27,122 +25,245 @@ const Devotionals = () => {
       id: 'vol-1',
       title: "Spring Season",
       subtitle: "Fresh Starts",
-      period: "Jan - Apr",
+      period: "Jan — Apr",
       price: 19.99,
-      color: "bg-blue-50",
-      accent: "text-blue-600",
-      features: ["12 weeks", "Habit tracker", "Print-ready"]
+      image: "/images/janapril.png",
+      color: "bg-[#e8f0fe]",
+      features: ["12 weeks of content", "Habit tracking pages", "Print at home"]
     },
     {
       id: 'vol-2',
       title: "Summer/Fall",
       subtitle: "Growing Strong",
-      period: "May - Aug",
+      period: "May — Aug",
       price: 19.99,
-      color: "bg-green-50",
-      accent: "text-green-600",
-      features: ["16 weeks", "Nature themes", "Great for trips"]
+      color: "bg-[#e9f7ef]",
+      features: ["16 weeks of content", "Nature-themed lessons", "Travel-friendly format"]
     },
     {
       id: 'vol-3',
       title: "Winter Season",
       subtitle: "Gathering In",
-      period: "Sept - Dec",
+      period: "Sept — Dec",
       price: 19.99,
-      color: "bg-orange-50",
-      accent: "text-orange-600",
-      features: ["16 weeks", "Advent specials", "Family activities"]
+      color: "bg-[#fff4ed]",
+      features: ["16 weeks of content", "Advent devotionals", "Family activity guides"]
     }
   ];
 
   return (
-    <section className="py-24 bg-[#FAF9F6] relative">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="devotionals" className="py-24 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         
-        {showNotification && (
-          <div className="fixed top-24 right-6 z-50 bg-green-500 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
-            <Check size={20} />
-            <span className="font-semibold">Added to cart!</span>
-          </div>
-        )}
-        
-        <div className="mb-16">
-          <span className="text-[#f0614b] font-bold text-xs uppercase mb-3 block">The Curriculum</span>
-          <h2 className="font-['Young_Serif'] text-5xl text-[#2e3973] mb-4">
-            A full year of faith-filled wonder.
-          </h2>
-          <p className="text-gray-500 max-w-xl">
-            Choose a season or grab the bundle for the complete experience.
-          </p>
+        {/* Modern Toast Notification */}
+        <AnimatePresence>
+          {showNotification && (
+            <motion.div 
+              initial={{ opacity: 0, y: 50, x: '-50%' }}
+              animate={{ opacity: 1, y: 0, x: '-50%' }}
+              exit={{ opacity: 0, y: 20, x: '-50%' }}
+              className="fixed bottom-10 left-1/2 z-50 bg-[#2e3973] text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-4 min-w-[300px]"
+            >
+              <div className="w-6 h-6 rounded-full bg-green-400 flex items-center justify-center">
+                <Check size={14} className="text-[#2e3973]" strokeWidth={4} />
+              </div>
+              <span className="font-bold tracking-tight">Added to your collection</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Header Section */}
+        <div className="text-center mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="text-[#f0614b] font-bold text-sm uppercase tracking-[0.2em] mb-4 block">The Curriculum</span>
+            <h2 className="font-['Young_Serif'] text-4xl md:text-6xl text-[#2e3973] mb-6">
+              A Year of <span className="italic text-[#f0614b]">Wonder</span>
+            </h2>
+            <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
+              Thoughtfully designed digital devotionals that transform Sunday lessons into daily family adventures. High-quality, printable, and deeply engaging.
+            </p>
+          </motion.div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
-          {volumes.map((vol) => (
-            <div key={vol.id} className="bg-white rounded-3xl p-4 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
-              <div className={`${vol.color} rounded-2xl aspect-square mb-6 flex items-center justify-center relative`}>
-                <div className="w-32 h-44 bg-white shadow-2xl rounded-sm">
-                  <div className="p-4">
-                    <div className={`w-6 h-6 rounded-full ${vol.color} flex items-center justify-center`}>
-                      <Book size={12} className={vol.accent} />
-                    </div>
+        {/* Products Grid */}
+        <div className="grid lg:grid-cols-3 gap-10 mb-24">
+          {volumes.map((vol, idx) => (
+            <motion.div 
+              key={vol.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              viewport={{ once: true }}
+              className="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col"
+            >
+              {/* Image Container with Custom Background */}
+              <div className={`${vol.color} m-4 rounded-2xl aspect-[4/5] relative overflow-hidden flex items-center justify-center group-hover:scale-[0.98] transition-transform duration-500`}>
+                {vol.image ? (
+                  <Image 
+                    src={vol.image} 
+                    alt={vol.title} 
+                    width={240}
+                    height={320}
+                    className="object-contain drop-shadow-2xl group-hover:rotate-2 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-40 h-56 bg-white/40 backdrop-blur-md rounded-lg shadow-inner flex items-center justify-center">
+                     <BookOpen size={40} className="text-slate-400" />
                   </div>
-                </div>
-                <div className="absolute top-4 left-4 bg-white/90 px-3 py-1 rounded-full text-[10px] font-bold uppercase">
+                )}
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-[#2e3973] uppercase tracking-widest shadow-sm">
                   {vol.period}
                 </div>
               </div>
 
-              <div className="px-4 pb-4">
-                <h3 className="font-['Young_Serif'] text-2xl text-[#2e3973] mb-1">{vol.title}</h3>
-                <p className="text-sm text-gray-500 mb-4">{vol.subtitle}</p>
+              {/* Content */}
+              <div className="p-8 pt-4 flex-grow flex flex-col">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="font-['Young_Serif'] text-2xl text-[#2e3973]">{vol.title}</h3>
+                  <span className="text-xl font-bold text-[#2e3973]">£{vol.price}</span>
+                </div>
+                <p className="text-[#f0614b] text-sm font-bold mb-6 uppercase tracking-tight">{vol.subtitle}</p>
                 
-                <ul className="space-y-2 mb-8">
+                <div className="space-y-3 mb-8 flex-grow">
                   {vol.features?.map((f, i) => (
-                    <li key={i} className="flex items-center gap-2 text-xs text-gray-600">
-                      <Check size={14} className="text-green-500" /> {f}
-                    </li>
+                    <div key={i} className="flex items-center gap-3 text-sm text-slate-500">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#f0614b]" />
+                      {f}
+                    </div>
                   ))}
-                </ul>
+                </div>
 
                 <button 
                   onClick={() => addToCart(vol)}
-                  className="w-full flex items-center justify-center gap-2 bg-[#2e3973] text-white py-4 rounded-2xl font-bold hover:bg-[#f0614b] transition-all"
+                  className="w-full bg-[#f0614b]/5 text-[#f0614b] py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 group-hover:bg-[#f0614b] group-hover:text-white transition-all duration-300 shadow-sm hover:shadow-lg"
                 >
                   <ShoppingBag size={18} />
-                  Add to Cart — £{vol.price.toFixed(2)}
+                  Add to Collection
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* Bundle */}
-        <div className="bg-[#2e3973] rounded-3xl p-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-[#f0614b]/10 -skew-x-12 translate-x-1/4" />
-          
-          <div className="relative z-10 flex flex-col lg:flex-row items-center gap-12">
-            <div className="flex-1 text-center lg:text-left">
-              <span className="bg-white/10 text-white border border-white/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase inline-block mb-4">
-                Best Value
-              </span>
-              <h2 className="font-['Young_Serif'] text-4xl text-white mb-4">Complete Seasonal Bundle</h2>
-              <p className="text-blue-100 text-lg mb-6">All 3 volumes, 44 weeks of content.</p>
+        {/* The Bundle Card - Highly Professional CTA */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="relative bg-[#2e3973] rounded-[2.5rem] overflow-hidden shadow-2xl"
+        >
+          <div className="absolute top-0 right-0 overflow-hidden w-48 h-48">
+            <div className="bg-[#f0614b] text-white text-[10px] font-bold uppercase tracking-widest py-2 w-64 text-center absolute top-10 -right-16 rotate-45 shadow-lg">
+              Most Popular
+            </div>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 p-8 md:p-16 items-center">
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-6">
+                {[1,2,3,4,5].map(s => <Star key={s} size={16} fill="#f0614b" color="#f0614b" />)}
+                <span className="text-white/60 text-xs font-bold ml-2 uppercase tracking-tighter">Trusted by 2,000+ Families</span>
+              </div>
               
-              <div className="flex items-center gap-6">
-                <div className="text-white">
-                  <p className="text-blue-300 line-through text-sm">£59.97</p>
-                  <p className="text-4xl font-black">£47.99</p>
+              <h3 className="font-['Young_Serif'] text-4xl md:text-5xl text-white mb-6 leading-tight">
+                The Complete <br/>Annual Collection
+              </h3>
+              
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {['44 Weeks of Lessons', 'Lifetime Access', 'Holiday Specials', 'Printable Activities'].map((item) => (
+                   <div key={item} className="flex items-center gap-2 text-white/80 text-sm">
+                      <div className="p-1 bg-white/10 rounded-full"><Check size={12} className="text-green-400" /></div>
+                      {item}
+                   </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-8 border-t border-white/10 pt-8">
+                <div>
+                  <p className="text-white/40 line-through text-sm font-bold">£59.97</p>
+                  <p className="text-5xl font-['Young_Serif'] text-white">£47.99</p>
                 </div>
                 <button 
                   onClick={() => addToCart({id: 'bundle', title: 'Complete Bundle', price: 47.99})}
-                  className="bg-[#f0614b] hover:scale-105 text-white px-10 py-5 rounded-2xl font-black text-lg transition-all shadow-xl"
+                  className="bg-[#f0614b] text-white px-10 py-5 rounded-2xl font-bold hover:bg-white hover:text-[#2e3973] transition-all transform hover:scale-105 shadow-xl flex items-center gap-2"
                 >
-                  Grab the Bundle
+                  Claim Bundle Discount
+                  <ArrowRight size={20} />
                 </button>
               </div>
             </div>
+
+            <div className="hidden lg:flex justify-center relative">
+               <div className="relative w-full h-[400px]">
+                 {/* Visual representation of 3 stacked books */}
+                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-80 bg-[#e8f0fe] rounded-2xl rotate-[-6deg] shadow-2xl border-4 border-white/10" />
+                 <div className="absolute top-4 left-1/2 -translate-x-1/2 w-64 h-80 bg-[#e9f7ef] rounded-2xl rotate-[2deg] shadow-2xl border-4 border-white/10" />
+                 <div className="absolute top-8 left-1/2 -translate-x-1/2 w-64 h-80 bg-white rounded-2xl rotate-[-2deg] shadow-2xl border-4 border-[#2e3973]/20 flex items-center justify-center">
+                    <div className="text-center p-6">
+                       <span className="block text-4xl mb-2">🎨</span>
+                       <p className="font-['Young_Serif'] text-[#2e3973] text-xl">The Full Adventure</p>
+                    </div>
+                 </div>
+               </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Benefits Section: Kids vs Parents */}
+        <div className="mt-32">
+          <div className="grid md:grid-cols-2 gap-px bg-slate-100 rounded-[3rem] overflow-hidden shadow-inner border border-slate-100">
+            {/* For Kids */}
+            <div className="bg-white p-12 lg:p-16">
+              <div className="w-14 h-14 bg-[#f0614b]/10 rounded-2xl flex items-center justify-center text-[#f0614b] mb-8">
+                <Sparkles size={28} />
+              </div>
+              <h3 className="font-['Young_Serif'] text-3xl text-[#2e3973] mb-8">For the Children</h3>
+              <ul className="space-y-6">
+                {[
+                  { t: "Daily Scripture", d: "Age-appropriate Bible passages with helpful context." },
+                  { t: "Creative Activities", d: "Art projects, puzzles, and hands-on tasks for busy hands." },
+                  { t: "Memory Verses", d: "Key passages designed for long-term heart storage." }
+                ].map((item, i) => (
+                  <li key={i} className="flex gap-5">
+                    <span className="text-[#f0614b] font-['Young_Serif'] text-xl">0{i+1}</span>
+                    <div>
+                      <p className="font-bold text-[#2e3973] mb-1 leading-tight">{item.t}</p>
+                      <p className="text-slate-500 text-sm leading-relaxed">{item.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* For Parents */}
+            <div className="bg-[#f8fafc] p-12 lg:p-16">
+              <div className="w-14 h-14 bg-[#2e3973]/10 rounded-2xl flex items-center justify-center text-[#2e3973] mb-8">
+                <Users size={28} />
+              </div>
+              <h3 className="font-['Young_Serif'] text-3xl text-[#2e3973] mb-8">For the Parents</h3>
+              <ul className="space-y-6">
+                {[
+                  { t: "Teaching Tips", d: "Practical guidance for leading meaningful discussions without stress." },
+                  { t: "Biblical Context", d: "Quick-read background notes so you feel prepared to answer questions." },
+                  { t: "Discussion Prompts", d: "Curated questions to help move from 'what' to 'why'." }
+                ].map((item, i) => (
+                  <li key={i} className="flex gap-5">
+                    <span className="text-[#2e3973]/30 font-['Young_Serif'] text-xl">0{i+1}</span>
+                    <div>
+                      <p className="font-bold text-[#2e3973] mb-1 leading-tight">{item.t}</p>
+                      <p className="text-slate-500 text-sm leading-relaxed">{item.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
+
       </div>
     </section>
   );

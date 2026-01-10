@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Check, Download, Mail, Home } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
-const SuccessPage = () => {
+const SuccessContent = () => {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const [orderDetails, setOrderDetails] = useState<any>(null);
@@ -42,7 +42,7 @@ const SuccessPage = () => {
           <h1 className="font-['Young_Serif'] text-4xl md:text-5xl text-[#2e3973] mb-4">
             Thank You for Your Order!
           </h1>
-          
+
           <p className="font-['Poppins'] text-gray-600 text-lg mb-8">
             Your payment was successful. We're excited to support your family's faith journey!
           </p>
@@ -63,7 +63,7 @@ const SuccessPage = () => {
           {/* What's Next */}
           <div className="border-t border-gray-200 pt-8 mb-8">
             <h3 className="font-['Young_Serif'] text-2xl text-[#2e3973] mb-6">What's Next?</h3>
-            
+
             <div className="grid md:grid-cols-2 gap-6 text-left">
               <div className="flex gap-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -89,14 +89,14 @@ const SuccessPage = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
+            <a
               href="/"
               className="font-['Poppins'] bg-[#2e3973] text-white px-8 py-4 rounded-2xl font-bold hover:bg-[#2e3973]/90 transition-all inline-flex items-center justify-center gap-2"
             >
               <Home size={20} />
               Back to Home
             </a>
-            <a 
+            <a
               href="mailto:info@creativekidsbibleclub.com"
               className="font-['Poppins'] bg-gray-100 text-[#2e3973] px-8 py-4 rounded-2xl font-bold hover:bg-gray-200 transition-all inline-flex items-center justify-center gap-2"
             >
@@ -117,6 +117,24 @@ const SuccessPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const SuccessPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center px-6 py-24">
+        <div className="max-w-2xl w-full bg-white rounded-[3rem] p-12 shadow-2xl text-center min-h-[400px] flex items-center justify-center">
+          <div className="animate-pulse flex flex-col items-center">
+            <div className="w-16 h-16 bg-gray-100 rounded-full mb-4"></div>
+            <div className="h-4 w-48 bg-gray-100 rounded mb-2"></div>
+            <div className="h-4 w-32 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+      </div>
+    }>
+      <SuccessContent />
+    </Suspense>
   );
 };
 

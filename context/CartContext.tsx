@@ -42,19 +42,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       const existingItem = prev.find(item => item.id === product.id);
       
       if (existingItem) {
-        // Item exists, increment quantity
         return prev.map(item =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
-        // New item, add with quantity 1
         return [...prev, { ...product, quantity: 1 }];
       }
     });
 
-    // Show brief notification
+    // Show brief notification only - don't open cart
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 2000);
   };

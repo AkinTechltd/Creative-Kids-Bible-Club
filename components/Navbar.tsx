@@ -18,7 +18,6 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Bounce animation when cart count changes
   useEffect(() => {
     if (cartCount > 0) {
       setCartBounce(true);
@@ -26,19 +25,12 @@ const Navigation = () => {
     }
   }, [cartCount]);
 
-  const handleCartClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsCartOpen(true);
-  };
-
   return (
     <nav className={`bg-white sticky top-0 z-50 transition-all duration-300 ${
       scrolled ? 'shadow-md py-2' : 'shadow-sm py-3'
     }`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          {/* Logo */}
           <div className="flex items-center">
             <a href="#home" className="flex items-center">
               <Image
@@ -52,7 +44,6 @@ const Navigation = () => {
             </a>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
             <a 
               href="#home" 
@@ -86,11 +77,12 @@ const Navigation = () => {
             </a>
           </div>
 
-          {/* CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-3">
             <button 
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 text-gray-600 hover:text-[#2e3973] hover:bg-slate-50 rounded-lg transition-all"
+              className={`relative p-2.5 text-gray-600 hover:text-[#2e3973] hover:bg-slate-50 rounded-lg transition-all ${
+                cartBounce ? 'animate-bounce' : ''
+              }`}
               type="button"
             >
               <ShoppingCart size={22} strokeWidth={2} />
@@ -108,11 +100,12 @@ const Navigation = () => {
             </a>
           </div>
 
-          {/* Mobile menu button */}
           <div className="lg:hidden flex items-center space-x-3">
             <button 
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 text-gray-600 hover:text-[#2e3973] hover:bg-slate-50 rounded-lg transition-all"
+              className={`relative p-2.5 text-gray-600 hover:text-[#2e3973] hover:bg-slate-50 rounded-lg transition-all ${
+                cartBounce ? 'animate-bounce' : ''
+              }`}
               type="button"
             >
               <ShoppingCart size={22} strokeWidth={2} />
@@ -134,7 +127,6 @@ const Navigation = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       <div 
         className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
@@ -187,34 +179,6 @@ const Navigation = () => {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes cartBounce {
-          0%, 100% {
-            transform: scale(1);
-          }
-          25% {
-            transform: scale(1.15);
-          }
-          50% {
-            transform: scale(0.95);
-          }
-          75% {
-            transform: scale(1.05);
-          }
-        }
-
-        @keyframes scaleIn {
-          from {
-            transform: scale(0);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-      `}</style>
     </nav>
   );
 };

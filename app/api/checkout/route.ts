@@ -11,6 +11,7 @@ interface CartItem {
   title: string;
   price: number;
   subtitle?: string;
+  quantity: number;
 }
 
 export async function POST(req: NextRequest) {
@@ -25,17 +26,25 @@ export async function POST(req: NextRequest) {
     }
 
     // Create line items for Stripe
-    const lineItems = items.map((item) => ({
-      price_data: {
-        currency: 'gbp',
-        product_data: {
-          name: item.title,
-          description: item.subtitle || '',
+    const lineItems = items.map((item) => {
+      const productData: { name: string; description?: string } = {
+        name: item.title,
+      };
+
+      // Only add description if it exists and is not empty
+      if (item.subtitle && item.subtitle.trim() !== '') {
+        productData.description = item.subtitle;
+      }
+
+      return {
+        price_data: {
+          currency: 'gbp',
+          product_data: productData,
+          unit_amount: Math.round(item.price * 100), // Convert to pence
         },
-        unit_amount: Math.round(item.price * 100), // Convert to pence
-      },
-      quantity: 1,
-    }));
+        quantity: item.quantity || 1,
+      };
+    });
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
@@ -46,7 +55,7 @@ export async function POST(req: NextRequest) {
       cancel_url: `${req.headers.get('origin')}/#devotionals`,
       billing_address_collection: 'required',
       shipping_address_collection: {
-        allowed_countries: ['GB', 'US', 'CA', 'AU'], // Add countries as needed
+        allowed_countries: ['GB', 'US', 'CA', 'AU'],
       },
     });
 
@@ -58,4 +67,4 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
+};

@@ -1,94 +1,163 @@
+'use client'
+
 import React from 'react'
-import { ChevronRight, Users, Sparkles } from 'lucide-react'
+import { Sparkles, MapPin, Calendar, Globe, Heart, BookOpen } from 'lucide-react'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 
 const About = () => {
   return (
-    <section id="about" className="py-20 md:py-32 bg-[#FAF9F6] relative overflow-hidden">
-      <div className="absolute top-20 left-10 w-32 h-32 bg-[#f0614b]/5 rounded-full blur-3xl" />
-      
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-          
-          {/* Visual Side: The "Personal Portfolio" Look */}
-          <div className="w-full lg:w-[45%]">
-            <div className="relative">
-              {/* Decorative "Paper" Backgrounds */}
-              <div className="absolute inset-0 bg-[#2e3973] rounded-[2.5rem] rotate-3 translate-x-2 translate-y-2 opacity-5" />
-              <div className="absolute inset-0 bg-[#f0614b] rounded-[2.5rem] -rotate-2 opacity-10" />
-              
-              {/* Main Image Container */}
-              <div className="relative bg-white p-5 rounded-[2.5rem] shadow-xl border border-gray-100">
-                <div className="aspect-[4/5] bg-slate-100 rounded-[2rem] overflow-hidden relative group">
-                  <Image src="/images/queeneth.jpg" alt="Queeneth" width={400} height={500} className="w-full h-full object-cover" />
-                  
-                  {/* Floating Stat Badge */}
-                  <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-lg border border-white/50">
-                    <p className="text-[#2e3973] font-bold text-xl leading-none">40+</p>
-                    <p className="text-gray-500 text-[10px] uppercase font-bold tracking-tighter">Countries</p>
-                  </div>
-                </div>
-
-                {/* Hand-drawn style Caption */}
-                <div className="pt-6 pb-2 text-center">
-                  <p className="font-['Young_Serif'] text-[#2e3973] text-xl italic opacity-80">
-                    "Making the Bible the best part of the day"
-                  </p>
-                </div>
-              </div>
-
-              {/* Est. Badge - Tactile Design */}
-              <div className="absolute -bottom-6 -left-6 bg-[#f0614b] text-white p-6 rounded-full shadow-2xl shadow-[#f0614b]/30 flex items-center justify-center transform hover:scale-110 transition-transform cursor-default">
-                <div>
-                  <p className="text-[10px] uppercase font-black opacity-80 tracking-widest text-center">Since</p>
-                  <p className="text-xl font-black">2020</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Text Side: The Narrative */}
-          <div className="w-full lg:w-[55%] space-y-8">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 text-[#f0614b]">
-                <Sparkles size={18} />
-                <span className="font-['Poppins'] font-bold text-sm uppercase tracking-widest">Our Story</span>
-              </div>
-              
-              <h2 className="font-['Young_Serif'] text-4xl md:text-5xl lg:text-6xl text-[#2e3973] leading-tight">
-                Hi, I'm <span className="text-[#f0614b] relative inline-block">
-                  Queeneth
-                  <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 100 10" preserveAspectRatio="none">
-                    <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </span>
+    <section id="about" className="py-24 bg-slate-50 overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6 lg:px-8">
+        
+        {/* Header Section */}
+        <div className="mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-6"
+          >
+            <div className="max-w-2xl">
+              <span className="inline-block px-4 py-1.5 bg-[#f0614b]/10 text-[#f0614b] text-sm font-bold uppercase tracking-widest rounded-full mb-4">
+                The Heart Behind the Club
+              </span>
+              <h2 className="font-['Young_Serif'] text-5xl md:text-6xl text-[#2e3973] leading-tight">
+                Meet Queeneth
               </h2>
             </div>
+            <div className="hidden md:block pb-2">
+               <div className="flex gap-2">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="w-12 h-1 bg-[#2e3973]/10 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ x: "-100%" }}
+                        whileInView={{ x: "0%" }}
+                        transition={{ duration: 1, delay: i * 0.2 }}
+                        className="w-full h-full bg-[#f0614b]" 
+                      />
+                    </div>
+                  ))}
+               </div>
+            </div>
+          </motion.div>
+        </div>
 
-            <div className="space-y-6">
-              <p className="font-['Poppins'] text-lg md:text-xl text-gray-700 leading-relaxed font-light">
-                I started Creative Kids Bible Club because I was tired of seeing kids zone out during family devotions. You know the look—<span className="bg-yellow-100 px-1 rounded">the glazed eyes, the fidgeting</span>, and the "are we done yet?"
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          
+          {/* Visual Side: Layered Image & Floating Stats */}
+          <div className="lg:col-span-5 relative">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="relative z-10"
+            >
+              <div className="aspect-[4/5] relative rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
+                <Image 
+                  src="/images/queeneth.jpg" 
+                  alt="Queeneth - Founder of Creative Kids Bible Club" 
+                  fill
+                  className="object-cover"
+                />
+              </div>
+
+              {/* Floating Stat 1: Global Reach */}
+              <motion.div 
+                initial={{ x: -20, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="absolute -left-6 bottom-12 bg-white p-4 rounded-xl shadow-xl flex items-center gap-4 border border-slate-100 hidden md:flex"
+              >
+                <div className="w-12 h-12 bg-[#2e3973] rounded-lg flex items-center justify-center text-white shadow-lg shadow-[#2e3973]/20">
+                  <Globe size={24} />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-[#2e3973]">40+</p>
+                  <p className="text-xs font-medium text-slate-500 uppercase tracking-tight">Countries reached</p>
+                </div>
+              </motion.div>
+
+              {/* Floating Stat 2: Experience */}
+              <motion.div 
+                initial={{ x: 20, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="absolute -right-6 -top-6 bg-[#f0614b] p-4 rounded-xl shadow-xl flex items-center gap-4 text-white hidden md:flex"
+              >
+                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                  <Heart size={20} fill="white" />
+                </div>
+                <div>
+                  <p className="text-xl font-bold italic leading-none">Since 2020</p>
+                  <p className="text-[10px] font-medium opacity-80 uppercase tracking-wider">Spreading the Word</p>
+                </div>
+              </motion.div>
+            </motion.div>
+            
+            {/* Background Decoration */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#f0614b]/5 rounded-full blur-3xl -z-10" />
+            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-[#2e3973]/5 rounded-full blur-3xl -z-10" />
+          </div>
+
+          {/* Content Side: Narrative Storytelling */}
+          <div className="lg:col-span-7 space-y-8">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="prose prose-lg prose-slate"
+            >
+              <p className="text-xl md:text-2xl font-medium text-slate-800 leading-relaxed mb-6">
+                I watched too many family devotions turn into <span className="text-[#f0614b] italic underline decoration-wavy decoration-[#f0614b]/30">battles of attention</span>. 
               </p>
               
-              <p className="font-['Poppins'] text-lg text-gray-600 leading-relaxed">
-                Here's what I learned: <strong className="text-[#2e3973]">Kids aren't bored with the Bible.</strong> They're bored with boring presentations of the Bible. Give them crayons, puzzles, and stories they can touch—suddenly, they can't get enough.
-              </p>
+              <div className="space-y-6 text-slate-600">
+                <p>
+                  Kids squirming, eyes wandering, and parents feeling the weight of frustration. In 2020, I realized that children weren’t disinterested in the Bible—they were simply disconnected from the way it was being taught.
+                </p>
+                
+                <div className="bg-white p-8 rounded-2xl border-l-8 border-[#2e3973] shadow-sm relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <Sparkles size={80} className="text-[#2e3973]" />
+                  </div>
+                  <p className="text-xl font-['Young_Serif'] text-[#2e3973] italic relative z-10">
+                    "Kids aren't bored with the Bible. They're bored with boring presentations of it. Give them something to do with their hands, and their hearts follow."
+                  </p>
+                </div>
 
-              <div className="bg-[#2e3973]/5 p-8 rounded-[2rem] border-l-4 border-[#2e3973]">
-                <p className="font-['Poppins'] text-gray-700 italic leading-relaxed">
-                  "We take God's Word and wrap it in creativity, color, and fun. It's about building a foundation that lasts a lifetime."
+                <p>
+                  I began replacing passive listening with active creation. Instead of a lecture, we used scissors, glue, and crayons. We turned ancient parables into puzzles, characters into drawings, and lessons into living memories. 
+                </p>
+
+                <p className="font-semibold text-[#2e3973] flex items-center gap-2">
+                  <BookOpen size={20} className="text-[#f0614b]" />
+                  Today, we’re making devotion time the best part of a child's day.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="pt-4 flex flex-col sm:flex-row items-center gap-6">
-              {/* Added a secondary "Human" touch: A signature-style name */}
-              <p className="font-['Young_Serif'] text-[#2e3973] text-2xl opacity-40 select-none">
-                Queeneth x
-              </p>
-            </div>
+            {/* Signature Area */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="pt-8 border-t border-slate-200 flex items-center justify-between"
+            >
+              <div>
+                <p className="text-3xl font-['Young_Serif'] text-[#2e3973]">Queeneth</p>
+                <p className="text-sm font-bold text-[#f0614b] uppercase tracking-tighter">Founder & Bible Educator</p>
+              </div>
+              <div className="flex flex-col items-end text-right">
+                <div className="flex items-center gap-1 text-slate-400 mb-1">
+                  <MapPin size={14} />
+                  <span className="text-xs font-medium">Lagos, Nigeria</span>
+                </div>
+                <div className="text-[10px] text-slate-400 max-w-[140px]">
+                  Global Ministry Serving Families Worldwide
+                </div>
+              </div>
+            </motion.div>
           </div>
-          
+
         </div>
       </div>
     </section>

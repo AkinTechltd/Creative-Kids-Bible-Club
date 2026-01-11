@@ -1,10 +1,10 @@
-// app/api/checkout/verify/route.ts   (fixed version)
-
+// app/api/checkout/verify/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';   // ← import here!
+import { getStripe } from '@/lib/stripe';
 
 export async function GET(req: NextRequest) {
   try {
+    const stripe = getStripe();
     const sessionId = req.nextUrl.searchParams.get('session_id');
 
     if (!sessionId) {

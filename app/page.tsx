@@ -69,7 +69,7 @@ const Community = () => {
 
 const Contact = () => {
   return (
-    <footer id="contact" className="bg-[#2e3973] pt-24 pb-12 text-white">
+    <div id="contact" className="bg-[#2e3973] pt-24 pb-12 text-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-20 pb-20 border-b border-white/10">
           <div className="space-y-8">
@@ -108,7 +108,7 @@ const Contact = () => {
            </div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };
 

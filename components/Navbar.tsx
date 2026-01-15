@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
+import Link from 'next/link';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -92,12 +93,12 @@ const Navigation = () => {
                 </span>
               )}
             </button>
-            <a 
-              href="#devotionals"
+            <Link 
+              href="/shop"
               className="font-['Poppins'] bg-[#2e3973] text-white px-5 py-2.5 rounded-lg font-medium hover:bg-[#2e3973]/90 transition-all shadow-sm hover:shadow-md"
             >
-              Get Started
-            </a>
+              Shop
+            </Link>
           </div>
 
           <div className="lg:hidden flex items-center space-x-3">
@@ -170,11 +171,11 @@ const Navigation = () => {
           </a>
           <div className="pt-3">
             <a 
-              href="#devotionals"
+              href="/shop"
               className="font-['Poppins'] block text-center bg-[#2e3973] text-white px-4 py-3 rounded-lg font-medium hover:bg-[#2e3973]/90 transition-all"
               onClick={() => setIsOpen(false)}
             >
-              Get Started
+              Shop
             </a>
           </div>
         </div>

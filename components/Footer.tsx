@@ -1,7 +1,6 @@
 'use client';
 
 import { Send } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Footer() {
@@ -33,17 +32,7 @@ export default function Footer() {
               <li><a href="#community" className="transition">Community</a></li>
             </ul>
           </div>
-          
-          <div>
-            <h4 className="font-bold mb-4">Resources</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className=" transition">FAQs</a></li>
-              <li><a href="#" className=" transition">Parent Guides</a></li>
-              <li><a href="#" className=" transition">Sample Lessons</a></li>
-              <li><a href="#" className=" transition">Blog</a></li>
-            </ul>
-          </div>
-          
+         
           <div>
             <h4 className="font-bold mb-4">Newsletter</h4>
             <p className="mb-4">

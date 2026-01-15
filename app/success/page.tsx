@@ -55,13 +55,13 @@ const SuccessContent = () => {
                 <span className="font-semibold">Order ID:</span> {sessionId.slice(0, 20)}...
               </p>
               <p className="text-sm text-gray-600">
-                A confirmation email has been sent to your inbox with download links and next steps.
+                Please Keep this confirmation for your records.
               </p>
             </div>
           )}
 
           {/* What's Next */}
-          <div className="border-t border-gray-200 pt-8 mb-8">
+          {/* <div className="border-t border-gray-200 pt-8 mb-8">
             <h3 className="font-['Young_Serif'] text-2xl text-[#2e3973] mb-6">What's Next?</h3>
 
             <div className="grid md:grid-cols-2 gap-6 text-left">
@@ -85,7 +85,7 @@ const SuccessContent = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -1,9 +1,10 @@
 'use client'
 
-import React from 'react';
-import { Check, ShoppingBag, ArrowRight, Star, BookOpen, Users, Sparkles } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Check, ShoppingBag, ArrowRight, Star, BookOpen, Users, Sparkles, Loader2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Product {
@@ -17,43 +18,83 @@ interface Product {
   features?: string[];
 }
 
+interface BundleInfo {
+  id: string;
+  title: string;
+  price: number;
+  originalPrice: number;
+  bookCount: number;
+  features?: string[];
+}
+
 const Devotionals = () => {
   const { addToCart, showNotification } = useCart();
+  const [volumes, setVolumes] = useState<Product[]>([]);
+  const [bundleInfo, setBundleInfo] = useState<BundleInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const volumes: Product[] = [
-    {
-      id: 'vol-1',
-      title: "Spring Season",
-      subtitle: "Fresh Starts",
-      period: "Jan — Apr",
-      price: 19.99,
-      image: "/images/janapril.png",
-      color: "bg-[#e8f0fe]",
-      features: ["12 weeks of content", "Habit tracking pages", "Print at home"]
-    },
-    {
-      id: 'vol-2',
-      title: "Summer/Fall",
-      subtitle: "Growing Strong",
-      period: "May — Aug",
-      price: 19.99,
-      color: "bg-[#e9f7ef]",
-      features: ["16 weeks of content", "Nature-themed lessons", "Travel-friendly format"]
-    },
-    {
-      id: 'vol-3',
-      title: "Winter Season",
-      subtitle: "Gathering In",
-      period: "Sept — Dec",
-      price: 19.99,
-      color: "bg-[#fff4ed]",
-      features: ["16 weeks of content", "Advent devotionals", "Family activity guides"]
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/devotionals');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch devotionals');
+        }
+        
+        const data = await response.json();
+        // Only show first 3 books on home page
+        setVolumes(data.books.slice(0, 3));
+        setBundleInfo(data.bundle);
+      } catch (err) {
+        console.error('Error loading devotionals:', err);
+        setError('Unable to load devotionals. Please refresh the page.');
+      } finally {
+        setLoading(false);
+      }
     }
-  ];
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="devotionals" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center min-h-[400px]">
+            <Loader2 className="w-12 h-12 text-[#f0614b] animate-spin mb-4" />
+            <p className="text-slate-500 text-lg">Loading devotionals...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="devotionals" className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <p className="text-red-500 text-lg mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-[#f0614b] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#d94e3a] transition-colors"
+              >
+                Refresh Page
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="devotionals" className="py-24 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-6 lg:px-8">
         
         {/* Modern Toast Notification */}
         <AnimatePresence>
@@ -89,8 +130,8 @@ const Devotionals = () => {
           </motion.div>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid lg:grid-cols-3 gap-10 mb-24">
+        {/* Products Grid - First 3 books */}
+        <div className="grid lg:grid-cols-3 gap-10 mb-16">
           {volumes.map((vol, idx) => (
             <motion.div 
               key={vol.id}
@@ -115,18 +156,22 @@ const Devotionals = () => {
                      <BookOpen size={40} className="text-slate-400" />
                   </div>
                 )}
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-[#2e3973] uppercase tracking-widest shadow-sm">
-                  {vol.period}
-                </div>
+                {vol.period && (
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-[#2e3973] uppercase tracking-widest shadow-sm">
+                    {vol.period}
+                  </div>
+                )}
               </div>
 
               {/* Content */}
               <div className="p-8 pt-4 flex-grow flex flex-col">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="font-['Young_Serif'] text-2xl text-[#2e3973]">{vol.title}</h3>
-                  <span className="text-xl font-bold text-[#2e3973]">£{vol.price}</span>
+                  <span className="text-xl font-bold text-[#2e3973]">£{vol.price.toFixed(2)}</span>
                 </div>
-                <p className="text-[#f0614b] text-sm font-bold mb-6 uppercase tracking-tight">{vol.subtitle}</p>
+                {vol.subtitle && (
+                  <p className="text-[#f0614b] text-sm font-bold mb-6 uppercase tracking-tight">{vol.subtitle}</p>
+                )}
                 
                 <div className="space-y-3 mb-8 flex-grow">
                   {vol.features?.map((f, i) => (
@@ -149,72 +194,89 @@ const Devotionals = () => {
           ))}
         </div>
 
-        {/* The Bundle Card - Highly Professional CTA */}
+        {/* View All Books Button */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative bg-[#2e3973] rounded-[2.5rem] overflow-hidden shadow-2xl"
+          className="text-center mb-24"
         >
-          <div className="absolute top-0 right-0 overflow-hidden w-48 h-48">
-            <div className="bg-[#f0614b] text-white text-[10px] font-bold uppercase tracking-widest py-2 w-64 text-center absolute top-10 -right-16 rotate-45 shadow-lg">
-              Most Popular
-            </div>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 p-8 md:p-16 items-center">
-            <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-6">
-                {[1,2,3,4,5].map(s => <Star key={s} size={16} fill="#f0614b" color="#f0614b" />)}
-                <span className="text-white/60 text-xs font-bold ml-2 uppercase tracking-tighter">Trusted by 2,000+ Families</span>
-              </div>
-              
-              <h3 className="font-['Young_Serif'] text-4xl md:text-5xl text-white mb-6 leading-tight">
-                The Complete <br/>Annual Collection
-              </h3>
-              
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                {['44 Weeks of Lessons', 'Lifetime Access', 'Holiday Specials', 'Printable Activities'].map((item) => (
-                   <div key={item} className="flex items-center gap-2 text-white/80 text-sm">
-                      <div className="p-1 bg-white/10 rounded-full"><Check size={12} className="text-green-400" /></div>
-                      {item}
-                   </div>
-                ))}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-8 border-t border-white/10 pt-8">
-                <div>
-                  <p className="text-white/40 line-through text-sm font-bold">£59.97</p>
-                  <p className="text-5xl font-['Young_Serif'] text-white">£47.99</p>
-                </div>
-                <button 
-                  onClick={() => addToCart({id: 'bundle', title: 'Complete Bundle', price: 47.99})}
-                  className="bg-[#f0614b] text-white px-10 py-5 rounded-2xl font-bold hover:bg-white hover:text-[#2e3973] transition-all transform hover:scale-105 shadow-xl flex items-center gap-2"
-                >
-                  Claim Bundle Discount
-                  <ArrowRight size={20} />
-                </button>
-              </div>
-            </div>
-
-            <div className="hidden lg:flex justify-center relative">
-               <div className="relative w-full h-[400px]">
-                 {/* Visual representation of 3 stacked books */}
-                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-80 bg-[#e8f0fe] rounded-2xl rotate-[-6deg] shadow-2xl border-4 border-white/10" />
-                 <div className="absolute top-4 left-1/2 -translate-x-1/2 w-64 h-80 bg-[#e9f7ef] rounded-2xl rotate-[2deg] shadow-2xl border-4 border-white/10" />
-                 <div className="absolute top-8 left-1/2 -translate-x-1/2 w-64 h-80 bg-white rounded-2xl rotate-[-2deg] shadow-2xl border-4 border-[#2e3973]/20 flex items-center justify-center">
-                    <div className="text-center p-6">
-                       <span className="block text-4xl mb-2">🎨</span>
-                       <p className="font-['Young_Serif'] text-[#2e3973] text-xl">The Full Adventure</p>
-                    </div>
-                 </div>
-               </div>
-            </div>
-          </div>
+          <Link 
+            href="/shop"
+            className="inline-flex items-center gap-3 bg-[#2e3973] text-white px-10 py-5 rounded-2xl font-bold hover:bg-[#1e2555] transition-all transform hover:scale-105 shadow-xl"
+          >
+            View All Books
+            <ArrowRight size={20} />
+          </Link>
         </motion.div>
 
+        {/* The Bundle Card */}
+        {bundleInfo && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative bg-[#2e3973] rounded-[2.5rem] overflow-hidden shadow-2xl mb-32"
+          >
+            <div className="absolute top-0 right-0 overflow-hidden w-48 h-48">
+              <div className="bg-[#f0614b] text-white text-[10px] font-bold uppercase tracking-widest py-2 w-64 text-center absolute top-10 -right-16 rotate-45 shadow-lg">
+                Most Popular
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-12 p-8 md:p-16 items-center">
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-6">
+                  {[1,2,3,4,5].map(s => <Star key={s} size={16} fill="#f0614b" color="#f0614b" />)}
+                  <span className="text-white/60 text-xs font-bold ml-2 uppercase tracking-tighter">Trusted by 2,000+ Families</span>
+                </div>
+                
+                <h3 className="font-['Young_Serif'] text-4xl md:text-5xl text-white mb-6 leading-tight">
+                  The Complete <br/>Annual Collection
+                </h3>
+                
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                  {['44 Weeks of Lessons', 'Lifetime Access', 'Holiday Specials', 'Printable Activities'].map((item) => (
+                     <div key={item} className="flex items-center gap-2 text-white/80 text-sm">
+                        <div className="p-1 bg-white/10 rounded-full"><Check size={12} className="text-green-400" /></div>
+                        {item}
+                     </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-8 border-t border-white/10 pt-8">
+                  <div>
+                    <p className="text-white/40 line-through text-sm font-bold">£{bundleInfo.originalPrice.toFixed(2)}</p>
+                    <p className="text-5xl font-['Young_Serif'] text-white">£{bundleInfo.price.toFixed(2)}</p>
+                  </div>
+                  <button 
+                    onClick={() => addToCart(bundleInfo)}
+                    className="bg-[#f0614b] text-white px-10 py-5 rounded-2xl font-bold hover:bg-white hover:text-[#2e3973] transition-all transform hover:scale-105 shadow-xl flex items-center gap-2"
+                  >
+                    Claim Bundle Discount
+                    <ArrowRight size={20} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="hidden lg:flex justify-center relative">
+                 <div className="relative w-full h-[400px]">
+                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-80 bg-[#e8f0fe] rounded-2xl rotate-[-6deg] shadow-2xl border-4 border-white/10" />
+                   <div className="absolute top-4 left-1/2 -translate-x-1/2 w-64 h-80 bg-[#e9f7ef] rounded-2xl rotate-[2deg] shadow-2xl border-4 border-white/10" />
+                   <div className="absolute top-8 left-1/2 -translate-x-1/2 w-64 h-80 bg-white rounded-2xl rotate-[-2deg] shadow-2xl border-4 border-[#2e3973]/20 flex items-center justify-center">
+                      <div className="text-center p-6">
+                         <span className="block text-4xl mb-2">🎨</span>
+                         <p className="font-['Young_Serif'] text-[#2e3973] text-xl">The Full Adventure</p>
+                      </div>
+                   </div>
+                 </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* Benefits Section: Kids vs Parents */}
-        <div className="mt-32">
+        <div>
           <div className="grid md:grid-cols-2 gap-px bg-slate-100 rounded-[3rem] overflow-hidden shadow-inner border border-slate-100">
             {/* For Kids */}
             <div className="bg-white p-12 lg:p-16">

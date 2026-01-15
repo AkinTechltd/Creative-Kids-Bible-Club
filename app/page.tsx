@@ -10,19 +10,7 @@ import Image from 'next/image';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import About from '@/components/About';
-import CartSidebar from '@/components/CartSidebar';
 import Devotionals from '@/components/Devotional';
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  subtitle?: string;
-  period?: string;
-  image?: string;
-  color?: string;
-  accent?: string;
-  features?: string[];
-}
 
 // Community Section - Focused on "Safe Haven"
 const Community = () => {
@@ -121,7 +109,6 @@ export default function App() {
       <Devotionals />
       <Community />
       <Contact />
-      <CartSidebar />
     </div>
   );
 }

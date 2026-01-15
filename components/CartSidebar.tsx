@@ -77,9 +77,16 @@ const CartSidebar = () => {
             <div className="divide-y divide-gray-100">
               {cart.map((item) => (
                 <div key={item.id} className="py-6 flex gap-6">
-                  {/* Item Image Placeholder */}
-                  <div className="w-24 h-32 bg-slate-50 flex-shrink-0 flex items-center justify-center border border-gray-100">
-                    <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Preview</div>
+                  <div className={`w-24 h-32 ${item.color || 'bg-slate-50'} flex-shrink-0 flex items-center justify-center border border-gray-100 rounded-lg`}>
+                    {item.image ? (
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-20 h-28 object-contain drop-shadow-lg"
+                      />
+                    ) : (
+                      <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Preview</div>
+                    )}
                   </div>
 
                   <div className="flex flex-col flex-1">

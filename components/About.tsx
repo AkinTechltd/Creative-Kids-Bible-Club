@@ -53,7 +53,7 @@ const About = () => {
               transition={{ duration: 0.8 }}
               className="relative z-10"
             >
-              <div className="aspect-[4/5] relative rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
+              <div className="aspect-4/5 relative rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
                 <Image 
                   src="/images/queeneth.jpg" 
                   alt="Queeneth - Founder of Creative Kids Bible Club" 
@@ -67,7 +67,7 @@ const About = () => {
                 initial={{ x: -20, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="absolute -left-6 bottom-12 bg-white p-4 rounded-xl shadow-xl flex items-center gap-4 border border-slate-100 hidden md:flex"
+                className="absolute -left-6 bottom-12 bg-white p-4 rounded-xl shadow-xl lg:flex items-center gap-4 border border-slate-100 hidden md:flex"
               >
                 <div className="w-12 h-12 bg-[#2e3973] rounded-lg flex items-center justify-center text-white shadow-lg shadow-[#2e3973]/20">
                   <Globe size={24} />
@@ -83,7 +83,7 @@ const About = () => {
                 initial={{ x: 20, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="absolute -right-6 -top-6 bg-[#f0614b] p-4 rounded-xl shadow-xl flex items-center gap-4 text-white hidden md:flex"
+                className="absolute -right-6 -top-6 bg-[#f0614b] p-4 rounded-xl shadow-xl lg:flex items-center gap-4 text-white hidden md:flex"
               >
                 <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                   <Heart size={20} fill="white" />
@@ -151,7 +151,7 @@ const About = () => {
                   <MapPin size={14} />
                   <span className="text-xs font-medium">Lagos, Nigeria</span>
                 </div>
-                <div className="text-[10px] text-slate-400 max-w-[140px]">
+                <div className="text-[10px] text-slate-400 max-w-35">
                   Global Ministry Serving Families Worldwide
                 </div>
               </div>

@@ -6,7 +6,7 @@ module.exports = {
         ckbc: {
           navy: '#2e3973',
           pink: '#f0614b',
-          light: '#f8fafc'
+          light: '#f8fafc',
         }
       },
       fontFamily: {

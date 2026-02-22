@@ -3,8 +3,7 @@ import { Poppins, Young_Serif } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import {CartProvider} from '../context/CartContext';
-import CartSidebar from '../components/CartSidebar';
+
 
 const youngSerif = Young_Serif({
   variable: "--font-young-serif",
@@ -33,12 +32,9 @@ export default function RootLayout({
       <body
         className={`${youngSerif.variable} ${poppins.variable} antialiased bg-white text-gray-900`}
       >
-        <CartProvider>
           <Navbar />
-          <CartSidebar />
           <main>{children}</main>
           <Footer />
-        </CartProvider>
       </body>
     </html>
   );

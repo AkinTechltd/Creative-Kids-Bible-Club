@@ -34,7 +34,7 @@ export default function Footer() {
           </div>
         </div>
         
-        <div className="border-t border-[#2e3973] pt-8 text-center">
+        <div className="border-t border-[#2e3973] pt-8 text-center text-xs">
           <p>{currentYear} Creative Kids Bible Club. All rights reserved.</p>
           <p className="mt-2">Founded by Queeneth Alobo</p>
         </div>

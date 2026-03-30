@@ -1,96 +1,108 @@
 import React from 'react'
-import { Book, Heart, Users, Star, Globe, Lightbulb } from 'lucide-react'
+
+const pillars = [
+  {
+    number: '01',
+    title: 'Biblical Foundation',
+    body: 'Deep, age-appropriate scripture teaching that goes beyond memorisation — children learn to understand, apply, and own God\'s Word for themselves.',
+    accent: '#f0614b',
+  },
+  {
+    number: '02',
+    title: 'Creative Learning',
+    body: 'Coloring, crafts, puzzles and hands-on activities make Bible stories unforgettable. Faith is activated through imagination and play — not passive listening.',
+    accent: '#2e3973',
+  },
+  {
+    number: '03',
+    title: 'Parent Partnership',
+    body: 'We equip parents and guardians to lead devotions with confidence — even without a theology background. You\'ve been sent to your children. We help you show up ready.',
+    accent: '#f0614b',
+  },
+  {
+    number: '04',
+    title: 'Global Community',
+    body: 'A worldwide family of parents raising children to know God, spanning over 40 countries. You are never doing this alone.',
+    accent: '#2e3973',
+  },
+]
 
 const Features = () => {
-  const features = [
-    {
-      icon: <Book size={28} />,
-      title: "Biblical Foundation",
-      description: "Deep, age-appropriate scripture teaching that goes beyond memorization — children learn to understand, apply, and own God's Word.",
-      color: "bg-blue-50",
-      iconColor: "text-blue-600"
-    },
-    {
-      icon: <Lightbulb size={28} />,
-      title: "Creative Learning",
-      description: "Coloring, crafts, puzzles, and hands-on activities that make Bible stories unforgettable. Faith activated through imagination.",
-      color: "bg-red-50",
-      iconColor: "text-[#f0614b]"
-    },
-    {
-      icon: <Users size={28} />,
-      title: "Parent Partnership",
-      description: "We equip parents and guardians to lead devotions with confidence — even without a theology background. You've got this.",
-      color: "bg-green-50",
-      iconColor: "text-green-600"
-    },
-    {
-      icon: <Globe size={28} />,
-      title: "Global Community",
-      description: "A worldwide family of parents raising children to know God, spanning over 40 countries across every continent.",
-      color: "bg-purple-50",
-      iconColor: "text-purple-600"
-    }
-  ];
-
   return (
-    <section className="py-20 md:py-32 bg-white relative">
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-           style={{ backgroundImage: `radial-gradient(#2e3973 1px, transparent 1px)`, backgroundSize: '32px 32px' }} />
+    <section className="bg-[#2e3973] py-20 md:py-28 relative overflow-hidden">
+      {/* Faint large number watermark — editorial texture */}
+      <div className="absolute right-0 top-0 font-['Young_Serif'] text-[20rem] text-white/[0.03] leading-none select-none pointer-events-none translate-x-16 -translate-y-12">
+        CKBC
+      </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
 
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
-          <span className="font-['Poppins'] font-bold text-[#f0614b] text-xs uppercase tracking-[0.2em] mb-4 block">
-            What We Do
-          </span>
-          <h2 className="font-['Young_Serif'] text-4xl md:text-5xl lg:text-6xl text-[#2e3973] mb-6">
-            Four pillars of <span className="underline decoration-[#f0614b]/30 decoration-wavy underline-offset-8">our mission.</span>
-          </h2>
-          <p className="font-['Poppins'] text-lg text-gray-600 leading-relaxed">
-            Everything we do at CKBC is designed to raise children who don't just know about God — they know Him personally and boldly.
-          </p>
+        {/* Section label */}
+        <div className="flex items-center gap-4 mb-4">
+          <span className="w-10 h-px bg-[#f0614b]" />
+          <p className="font-['Poppins'] text-[11px] font-black uppercase tracking-[0.3em] text-[#f0614b]">What We Do</p>
         </div>
 
-        {/* Feature Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-          {features.map((feature, index) => (
+        {/* Headline — two-col split */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-16 border-b border-white/10 pb-12">
+          <h2 className="font-['Young_Serif'] text-4xl md:text-5xl text-white leading-tight">
+            Four pillars of our mission.
+          </h2>
+          <div className="flex flex-col justify-end">
+            <p className="font-['Poppins'] text-white/60 leading-relaxed text-[15px]">
+              Everything at CKBC is designed to raise children who don't just know <em>about</em> God — they know Him personally, live boldly, and carry the Word into every room they enter.
+            </p>
+          </div>
+        </div>
+
+        {/* Pillars — horizontal newspaper rule layout, not icon cards */}
+        <div className="grid md:grid-cols-2 gap-0">
+          {pillars.map((pillar, i) => (
             <div
-              key={index}
-              className="group relative bg-white p-8 rounded-4xl hover:shadow-2xl hover:shadow-[#2e3973]/5 transition-all duration-500 border border-gray-100 flex flex-col items-start hover:-translate-y-2"
+              key={pillar.number}
+              className={`
+                py-10 px-8
+                ${i % 2 === 0 ? 'md:border-r border-white/10' : ''}
+                ${i < 2 ? 'border-b border-white/10' : ''}
+                group hover:bg-white/5 transition-colors duration-300
+              `}
             >
-              <div className={`mb-6 p-4 rounded-2xl ${feature.color} ${feature.iconColor} group-hover:scale-110 transition-transform duration-500`}>
-                {feature.icon}
+              {/* Large number + rule */}
+              <div className="flex items-center gap-4 mb-5">
+                <span
+                  className="font-['Young_Serif'] text-5xl leading-none"
+                  style={{ color: pillar.accent }}
+                >
+                  {pillar.number}
+                </span>
+                <span className="flex-grow h-px bg-white/10" />
               </div>
 
-              <h3 className="font-['Poppins'] text-xl font-bold text-[#2e3973] mb-3 leading-tight">
-                {feature.title}
+              <h3 className="font-['Young_Serif'] text-2xl text-white mb-3">
+                {pillar.title}
               </h3>
-
-              <p className="font-['Poppins'] text-gray-500 text-[15px] leading-relaxed">
-                {feature.description}
+              <p className="font-['Poppins'] text-white/60 text-[14px] leading-relaxed">
+                {pillar.body}
               </p>
-
-              <div className="mt-6 w-8 h-1 bg-gray-100 rounded-full group-hover:w-16 group-hover:bg-[#f0614b] transition-all duration-500" />
             </div>
           ))}
         </div>
 
-        {/* Vision Statement */}
-        <div className="mt-24 flex justify-center">
-          <div className="relative inline-block">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-[#2e3973] rotate-45" />
-            <div className="relative bg-[#2e3973] text-white px-8 py-6 rounded-4xl shadow-xl text-center max-w-2xl">
-              <p className="font-['Poppins'] text-lg md:text-xl italic leading-relaxed mb-4">
-                "To cultivate a generation of children deeply rooted in God's Word, excelling in all areas of life, and boldly proclaiming Jesus on every platform."
-              </p>
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#f0614b] flex items-center justify-center font-bold text-xs">Q</div>
-                <span className="font-['Poppins'] font-bold text-sm tracking-wide opacity-80 italic">— CKBC Vision Statement</span>
-              </div>
-            </div>
+        {/* Vision statement — typographic block quote */}
+        <div className="mt-16 border-t border-white/10 pt-12 grid lg:grid-cols-12 gap-6 items-center">
+          <div className="lg:col-span-1">
+            <p className="font-['Young_Serif'] text-7xl text-[#f0614b] leading-none">"</p>
+          </div>
+          <div className="lg:col-span-9">
+            <p className="font-['Young_Serif'] text-2xl md:text-3xl text-white italic leading-snug">
+              To cultivate a generation of children deeply rooted in God's Word, excelling in all areas of life, and boldly proclaiming Jesus on every platform.
+            </p>
+          </div>
+          <div className="lg:col-span-2 lg:text-right">
+            <p className="font-['Poppins'] text-[10px] font-black uppercase tracking-[0.2em] text-[#f0614b]">CKBC Vision</p>
           </div>
         </div>
+
       </div>
     </section>
   );
